@@ -3,6 +3,7 @@ import Router from 'next/router'
 // import cookie from 'js-cookie'
 import firebase from './firebase'
 import { UrlObject } from 'url'
+import { createUser } from './db'
 
 interface IAuthContext {
   user: IUser | null
@@ -53,6 +54,7 @@ function useProvideAuth() {
   const handleUser = async (rawUser: firebase.User | null) => {
     if (rawUser) {
       const user = await formatUser(rawUser)
+      createUser(user.uid, user)
       setUser(user)
       setLoading(false)
       return user
@@ -70,7 +72,6 @@ function useProvideAuth() {
       .signInWithPopup(new firebase.auth.GithubAuthProvider())
       .then((response) => {
         handleUser(response.user)
-
         if (redirect) {
           Router.push(redirect)
         }
@@ -79,7 +80,6 @@ function useProvideAuth() {
 
   const signout = () => {
     Router.push('/')
-
     return firebase
       .auth()
       .signOut()

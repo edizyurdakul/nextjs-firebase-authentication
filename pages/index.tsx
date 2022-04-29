@@ -6,7 +6,6 @@ import NextImage from 'next/image'
 
 const Home: NextPage = () => {
   const auth = useAuth()
-  console.log(auth)
 
   return (
     <div>
