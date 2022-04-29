@@ -1,6 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useAuth } from '../lib/auth'
+import NextImage from 'next/image'
 
 const Home: NextPage = () => {
   const auth = useAuth()
@@ -14,21 +16,49 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1 className="py-4 text-3xl font-bold underline">Hello world!</h1>
+      <section className="container mx-auto py-8">
+        <h1 className="my-4 text-3xl font-bold">
+          Next.js Firebase Authentication
+        </h1>
+        {auth !== null && (
+          <>
+            {auth.user !== null && (
+              <div className="my-4">
+                <div className="relative h-64 w-64 ">
+                  {auth.user!.photoURL !== null && (
+                    <NextImage
+                      className="rounded-full object-cover"
+                      layout="fill"
+                      src={auth.user.photoURL}
+                      alt=""
+                    />
+                  )}
+                </div>
+                <h2 className="mt-4 text-xl font-semibold">
+                  {auth.user.displayName}
+                </h2>
 
-      {auth?.user != null ? (
-        <button onClick={() => auth!.signout()}>Sign Out</button>
-      ) : (
-        <button onClick={() => auth!.signinWithGithub()}>
-          Sign in with Github
-        </button>
-      )}
-      {auth?.user !== null && (
-        <>
-          <div>{auth!.user?.displayName}</div>
-          <div>{auth!.user?.email}</div>
-        </>
-      )}
+                <p>{auth.user.email}</p>
+              </div>
+            )}
+          </>
+        )}
+        {auth?.user != null ? (
+          <button
+            className="bg-black px-4 py-2 text-white"
+            onClick={() => auth!.signout()}
+          >
+            Sign Out
+          </button>
+        ) : (
+          <button
+            className="bg-black px-4 py-2 text-white"
+            onClick={() => auth!.signinWithGithub()}
+          >
+            Sign in with Github
+          </button>
+        )}
+      </section>
     </div>
   )
 }
