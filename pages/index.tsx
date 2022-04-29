@@ -13,7 +13,7 @@ const Home: NextPage = () => {
       </Head>
 
       <h1 className="py-4 text-3xl font-bold underline">Hello world!</h1>
-      <button onClick={() => auth.signinWithGithub()}>
+      <button onClick={() => auth?.signinWithGithub()}>
         Sign in with Github
       </button>
       <div>{auth?.user?.email}</div>
