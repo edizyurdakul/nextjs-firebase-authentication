@@ -1,9 +1,19 @@
 import React, { useState, useEffect, useContext, createContext } from 'react'
 import firebase from './firebase'
 
-const authContext = createContext(null)
+interface IAuthContext {
+  user: firebase.User | null
+  signinWithGithub: () => Promise<firebase.User | null>
+  signout: () => Promise<void>
+}
 
-export function ProvideAuth({ children }) {
+type TProvideAuth = {
+  children?: React.ReactNode
+}
+
+const authContext = createContext<IAuthContext | null>(null)
+
+export function ProvideAuth({ children }: TProvideAuth) {
   const auth = useProvideAuth()
 
   return <authContext.Provider value={auth}>{children}</authContext.Provider>
@@ -14,7 +24,7 @@ export const useAuth = () => {
 }
 
 function useProvideAuth() {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState<firebase.User | null>(null)
 
   const signinWithGithub = () => {
     return firebase
@@ -31,7 +41,7 @@ function useProvideAuth() {
       .auth()
       .signOut()
       .then(() => {
-        setUser(false)
+        setUser(null)
       })
   }
 
@@ -40,7 +50,7 @@ function useProvideAuth() {
       if (user) {
         setUser(user)
       } else {
-        setUser(false)
+        setUser(null)
       }
     })
     return () => {

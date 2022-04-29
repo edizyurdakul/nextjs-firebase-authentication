@@ -4,6 +4,8 @@ import { useAuth } from '../lib/auth'
 
 const Home: NextPage = () => {
   const auth = useAuth()
+  console.log(auth)
+
   return (
     <div>
       <Head>
@@ -13,10 +15,20 @@ const Home: NextPage = () => {
       </Head>
 
       <h1 className="py-4 text-3xl font-bold underline">Hello world!</h1>
-      <button onClick={() => auth?.signinWithGithub()}>
-        Sign in with Github
-      </button>
-      <div>{auth?.user?.email}</div>
+
+      {auth?.user != null ? (
+        <button onClick={() => auth!.signout()}>Sign Out</button>
+      ) : (
+        <button onClick={() => auth!.signinWithGithub()}>
+          Sign in with Github
+        </button>
+      )}
+      {auth?.user !== null && (
+        <>
+          <div>{auth!.user?.displayName}</div>
+          <div>{auth!.user?.email}</div>
+        </>
+      )}
     </div>
   )
 }
