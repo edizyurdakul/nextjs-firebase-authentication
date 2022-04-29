@@ -1,7 +1,9 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import { useAuth } from '../lib/auth'
 
 const Home: NextPage = () => {
+  const auth = useAuth()
   return (
     <div>
       <Head>
@@ -11,6 +13,10 @@ const Home: NextPage = () => {
       </Head>
 
       <h1 className="py-4 text-3xl font-bold underline">Hello world!</h1>
+      <button onClick={() => auth.signinWithGithub()}>
+        Sign in with Github
+      </button>
+      <div>{auth?.user?.email}</div>
     </div>
   )
 }
