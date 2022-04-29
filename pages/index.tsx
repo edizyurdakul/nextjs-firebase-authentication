@@ -28,18 +28,16 @@ const Home: NextPage = () => {
             {auth.user !== null && (
               <div className="my-4">
                 <div className="relative h-64 w-64 ">
-                  {auth.user!.photoURL !== null && (
+                  {auth.user!.photoUrl !== null && (
                     <NextImage
                       className="rounded-full object-cover"
                       layout="fill"
-                      src={auth.user.photoURL}
+                      src={auth.user.photoUrl}
                       alt=""
                     />
                   )}
                 </div>
-                <h2 className="mt-4 text-xl font-semibold">
-                  {auth.user.displayName}
-                </h2>
+                <h2 className="mt-4 text-xl font-semibold">{auth.user.name}</h2>
 
                 <p>{auth.user.email}</p>
               </div>
@@ -56,7 +54,7 @@ const Home: NextPage = () => {
         ) : (
           <button
             className="bg-black px-4 py-2 text-white"
-            onClick={() => auth!.signinWithGithub()}
+            onClick={() => auth!.signinWithGitHub('/')}
           >
             Sign in with Github
           </button>
