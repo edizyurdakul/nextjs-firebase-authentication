@@ -9,6 +9,10 @@ interface IAuthContext {
   user: IUser | null
   // eslint-disable-next-line no-unused-vars
   signinWithGitHub: (redirect: string | UrlObject) => Promise<void>
+  // eslint-disable-next-line no-unused-vars
+  signinWithGoogle: (redirect: string | UrlObject) => Promise<void>
+  // eslint-disable-next-line no-unused-vars
+  signinWithEmail: (email: any, password: any) => Promise<void>
   signout: () => Promise<
     | false
     | {
@@ -65,6 +69,17 @@ function useProvideAuth() {
     }
   }
 
+  const signinWithEmail = (email: any, password: any) => {
+    setLoading(true)
+    return firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((response) => {
+        handleUser(response.user)
+        Router.push('/sites')
+      })
+  }
+
   const signinWithGitHub = (redirect: string | UrlObject) => {
     setLoading(true)
     return firebase
@@ -72,6 +87,20 @@ function useProvideAuth() {
       .signInWithPopup(new firebase.auth.GithubAuthProvider())
       .then((response) => {
         handleUser(response.user)
+        if (redirect) {
+          Router.push(redirect)
+        }
+      })
+  }
+
+  const signinWithGoogle = (redirect: string | UrlObject) => {
+    setLoading(true)
+    return firebase
+      .auth()
+      .signInWithPopup(new firebase.auth.GoogleAuthProvider())
+      .then((response) => {
+        handleUser(response.user)
+
         if (redirect) {
           Router.push(redirect)
         }
@@ -95,7 +124,9 @@ function useProvideAuth() {
   return {
     user,
     loading,
+    signinWithEmail,
     signinWithGitHub,
+    signinWithGoogle,
     signout,
   }
 }

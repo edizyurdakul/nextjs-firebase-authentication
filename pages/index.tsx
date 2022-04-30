@@ -51,12 +51,26 @@ const Home: NextPage = () => {
             Sign Out
           </button>
         ) : (
-          <button
-            className="bg-black px-4 py-2 text-white"
-            onClick={() => auth!.signinWithGitHub('/')}
-          >
-            Sign in with Github
-          </button>
+          <div className="flex space-x-4">
+            {/* <button
+              className="bg-black px-4 py-2 text-white"
+              onClick={() => auth!.signinWithEmail('/')}
+            >
+              Sign in with Email and Password
+            </button> */}
+            <button
+              className="bg-black px-4 py-2 text-white"
+              onClick={() => auth!.signinWithGitHub('/')}
+            >
+              Sign in with Github
+            </button>
+            <button
+              className="bg-black px-4 py-2 text-white"
+              onClick={() => auth!.signinWithGoogle('/')}
+            >
+              Sign in with Google
+            </button>
+          </div>
         )}
       </section>
     </div>
